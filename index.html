@@ -18,6 +18,8 @@
       --red-bg: #fef2f2;
       --amber-bg: #fffbeb;
       --amber: #92400e;
+      --blue-bg: #eff6ff;
+      --blue: #1d4ed8;
     }
 
     * {
@@ -38,24 +40,27 @@
       padding: 24px;
     }
 
-    .card {
+    .card,
+    .question {
       background: var(--card);
       border: 1px solid var(--border);
+      box-shadow: 0 14px 40px rgba(17, 24, 39, 0.08);
+    }
+
+    .card {
       border-radius: 20px;
       padding: 24px;
-      box-shadow: 0 14px 40px rgba(17,24,39,0.08);
       margin-bottom: 18px;
     }
 
     h1 {
       margin: 0 0 8px;
       font-size: 30px;
-      letter-spacing: -0.02em;
     }
 
     h2 {
       margin: 0 0 12px;
-      font-size: 19px;
+      font-size: 20px;
     }
 
     .muted {
@@ -70,7 +75,8 @@
     }
 
     @media (max-width: 720px) {
-      .row {
+      .row,
+      .stats {
         grid-template-columns: 1fr;
       }
     }
@@ -85,8 +91,8 @@
     }
 
     input[type="text"]:focus {
-      border-color: #111827;
-      box-shadow: 0 0 0 3px rgba(17,24,39,0.08);
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(17, 24, 39, 0.08);
     }
 
     button {
@@ -96,6 +102,11 @@
       font-size: 16px;
       cursor: pointer;
       font-weight: 700;
+    }
+
+    button:disabled {
+      cursor: not-allowed;
+      opacity: 0.55;
     }
 
     .primary {
@@ -123,10 +134,18 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(243,244,246,0.92);
+      background: rgba(243, 244, 246, 0.94);
       backdrop-filter: blur(10px);
       padding: 10px 0;
       margin-bottom: 10px;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .progress-inner {
@@ -139,13 +158,11 @@
     .progress-bar {
       height: 100%;
       width: 0%;
-      background: #111827;
+      background: var(--accent);
       transition: width 0.2s ease;
     }
 
     .question {
-      background: var(--card);
-      border: 1px solid var(--border);
       border-radius: 18px;
       padding: 18px;
       margin-bottom: 14px;
@@ -156,15 +173,19 @@
       margin-bottom: 12px;
     }
 
-    .section {
+    .section,
+    .tag {
       display: inline-block;
-      margin-bottom: 8px;
-      padding: 4px 9px;
       border-radius: 999px;
-      background: #eef2ff;
-      color: #3730a3;
       font-size: 12px;
       font-weight: 700;
+    }
+
+    .section {
+      margin-bottom: 8px;
+      padding: 4px 9px;
+      background: #eef2ff;
+      color: #3730a3;
     }
 
     label.option {
@@ -192,16 +213,25 @@
       display: none;
     }
 
+    .notice {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .page-summary {
+      background: var(--blue-bg);
+      border-color: #bfdbfe;
+      color: var(--blue);
+    }
+
     .stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-    }
-
-    @media (max-width: 720px) {
-      .stats {
-        grid-template-columns: 1fr 1fr;
-      }
     }
 
     .stat {
@@ -235,11 +265,7 @@
     }
 
     .tag {
-      display: inline-block;
       padding: 3px 8px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 700;
       margin-bottom: 8px;
     }
 
@@ -271,10 +297,11 @@
       padding: 10px 12px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      background: rgba(255,255,255,0.78);
+      background: rgba(255, 255, 255, 0.78);
     }
 
-    .review-option.right-answer {
+    .review-option.right-answer,
+    .review-option.selected-correct {
       border-color: #86efac;
       background: #dcfce7;
     }
@@ -282,11 +309,6 @@
     .review-option.wrong-answer {
       border-color: #fca5a5;
       background: #fee2e2;
-    }
-
-    .review-option.selected-correct {
-      border-color: #86efac;
-      background: #dcfce7;
     }
 
     .option-note {
@@ -310,29 +332,12 @@
       margin-top: 10px;
       padding: 12px;
       border-left: 4px solid var(--red);
-      background: rgba(255,255,255,0.72);
+      background: rgba(255, 255, 255, 0.72);
       border-radius: 10px;
-    }
-
-    .notice {
-      background: var(--amber-bg);
-      color: var(--amber);
-      border: 1px solid #fde68a;
-      border-radius: 14px;
-      padding: 14px;
-      margin-top: 14px;
     }
 
     .small {
       font-size: 13px;
-    }
-
-    .top-actions {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      align-items: center;
-      flex-wrap: wrap;
     }
   </style>
 </head>
@@ -342,13 +347,13 @@
       <div class="top-actions">
         <div>
           <h1>Электронный тест по русскому языку</h1>
-          <p class="muted">100 вопросов. После завершения появятся баллы и объяснения по неправильным ответам.</p>
+          <p class="muted">100 вопросов: 10 страниц по 10 вопросов. После каждой страницы появится результат и объяснения.</p>
         </div>
         <div class="muted">GitHub Pages · offline-ready</div>
       </div>
 
       <div class="notice small">
-        Вопросы очищены от дублей и спорных вариантов. Результаты не отправляются автоматически: их можно скопировать или скачать CSV.
+        Результаты не отправляются автоматически: итог можно скопировать, скачать CSV или сохранить как PDF.
       </div>
 
       <div class="row" style="margin-top: 16px;">
@@ -364,29 +369,56 @@
     <div id="testScreen" class="hidden">
       <div class="progress">
         <div class="top-actions small muted">
-          <span id="answeredCounter">Отвечено: 0 / 100</span>
-          <span>Тест по русскому языку</span>
+          <span id="pageCounter">Страница 1 / 10</span>
+          <span id="answeredCounter">Отвечено на странице: 0 / 10</span>
         </div>
         <div class="progress-inner">
           <div class="progress-bar" id="progressBar"></div>
         </div>
       </div>
 
+      <div class="card page-summary">
+        <h2 id="pageTitle">Страница 1</h2>
+        <p class="small" id="pageSubtitle">Вопросы 1-10. После проверки можно перейти дальше.</p>
+      </div>
+
       <div id="questionsContainer"></div>
 
       <div class="card">
-        <button class="primary" onclick="finishTest()">Завершить тест и показать объяснения</button>
-        <p class="muted small">После завершения ответы будут проверены, а неправильные варианты получат объяснение.</p>
+        <button class="primary" id="checkPageButton" onclick="checkCurrentPage()">Проверить страницу и показать объяснения</button>
+        <p class="muted small">После проверки ответы на этой странице будут зафиксированы.</p>
+      </div>
+    </div>
+
+    <div class="hidden" id="pageReviewScreen">
+      <div class="card">
+        <h1 id="pageReviewTitle">Результат страницы</h1>
+        <div class="stats">
+          <div class="stat"><b id="pageScoreStat">0 / 10</b><span>баллов</span></div>
+          <div class="stat"><b id="pagePercentStat">0%</b><span>процент</span></div>
+          <div class="stat"><b id="pageWrongStat">0</b><span>ошибок</span></div>
+          <div class="stat"><b id="totalProgressStat">0 / 100</b><span>всего</span></div>
+        </div>
+        <div class="button-row">
+          <button class="secondary" onclick="showCurrentPage()">Вернуться к странице</button>
+          <button class="primary" id="nextPageButton" onclick="goNextPage()">Следующая страница</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Разбор страницы</h2>
+        <p class="muted">Выбранный неправильный вариант отмечен красным, правильный ответ - зелёным.</p>
+        <div id="pageReviewContainer"></div>
       </div>
     </div>
 
     <div class="hidden" id="resultScreen">
       <div class="card">
-        <h1>Результат</h1>
+        <h1>Итоговый результат</h1>
         <div class="stats">
           <div class="stat"><b id="scoreStat">0</b><span>баллов</span></div>
           <div class="stat"><b id="percentStat">0%</b><span>процент</span></div>
-          <div class="stat"><b id="gradeStat">—</b><span>оценка</span></div>
+          <div class="stat"><b id="gradeStat">-</b><span>оценка</span></div>
           <div class="stat"><b id="wrongStat">0</b><span>ошибок</span></div>
         </div>
         <div class="button-row">
@@ -398,8 +430,8 @@
       </div>
 
       <div class="card">
-        <h2>Разбор ответов</h2>
-        <p class="muted">У неправильных ответов показано объяснение. Правильные ответы отмечены зелёным.</p>
+        <h2>Полный разбор ответов</h2>
+        <p class="muted">Здесь собраны результаты всех 10 страниц.</p>
         <div id="reviewContainer"></div>
       </div>
     </div>
@@ -407,114 +439,15 @@
 
   <script src="questions.js"></script>
   <script>
+    const PAGE_SIZE = 10;
+    const TOTAL_PAGES = Math.ceil(QUESTIONS.length / PAGE_SIZE);
+    const answers = {};
+    const checkedPages = new Map();
+    let currentPage = 0;
     let lastResult = null;
 
     function letter(index) {
       return ['А', 'Б', 'В', 'Г', 'Д'][index] || String(index + 1);
-    }
-
-    function startTest() {
-      const name = document.getElementById('studentName').value.trim();
-      if (!name) {
-        alert('Введите имя студента.');
-        return;
-      }
-      document.getElementById('startScreen').classList.add('hidden');
-      document.getElementById('testScreen').classList.remove('hidden');
-      renderQuestions();
-      updateProgress();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function renderQuestions() {
-      const container = document.getElementById('questionsContainer');
-      container.innerHTML = '';
-
-      QUESTIONS.forEach(q => {
-        const block = document.createElement('div');
-        block.className = 'question';
-
-        const section = q.section ? `<div class="section">${q.section}</div>` : '';
-        const optionsHtml = q.options.map((option, index) => `
-          <label class="option">
-            <input type="radio" name="q${q.id}" value="${index}" onchange="updateProgress()" />
-            <span><b>${letter(index)}.</b> ${option}</span>
-          </label>
-        `).join('');
-
-        block.innerHTML = `
-          ${section}
-          <div class="question-title">${q.id}. ${q.text}</div>
-          ${optionsHtml}
-        `;
-
-        container.appendChild(block);
-      });
-    }
-
-    function getSelectedIndex(q) {
-      const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
-      return selected ? Number(selected.value) : null;
-    }
-
-    function updateProgress() {
-      const answered = QUESTIONS.filter(q => getSelectedIndex(q) !== null).length;
-      const percent = Math.round((answered / QUESTIONS.length) * 100);
-      document.getElementById('answeredCounter').textContent = `Отвечено: ${answered} / ${QUESTIONS.length}`;
-      document.getElementById('progressBar').style.width = `${percent}%`;
-    }
-
-    function calculateGrade(percent) {
-      if (percent >= 85) return '5';
-      if (percent >= 70) return '4';
-      if (percent >= 50) return '3';
-      return '2';
-    }
-
-    function finishTest() {
-      const unanswered = QUESTIONS.filter(q => getSelectedIndex(q) === null).length;
-      if (unanswered > 0) {
-        const ok = confirm(`Без ответа осталось вопросов: ${unanswered}. Завершить тест?`);
-        if (!ok) return;
-      }
-
-      let score = 0;
-      const details = QUESTIONS.map(q => {
-        const selected = getSelectedIndex(q);
-        const isCorrect = selected === q.correct;
-        if (isCorrect) score += 1;
-
-        return {
-          id: q.id,
-          question: q.text,
-          selectedIndex: selected,
-          selectedText: selected === null ? 'Нет ответа' : q.options[selected],
-          correctIndex: q.correct,
-          correctText: q.options[q.correct],
-          options: q.options,
-          isCorrect,
-          explanation: q.explanation
-        };
-      });
-
-      const percent = Math.round((score / QUESTIONS.length) * 100);
-      const grade = calculateGrade(percent);
-
-      lastResult = {
-        studentName: document.getElementById('studentName').value.trim(),
-        groupName: document.getElementById('groupName').value.trim(),
-        date: new Date().toLocaleString('ru-RU'),
-        score,
-        maxScore: QUESTIONS.length,
-        percent,
-        grade,
-        details
-      };
-
-      renderResult(lastResult);
-      document.getElementById('testScreen').classList.add('hidden');
-      document.getElementById('resultScreen').classList.remove('hidden');
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function escapeHtml(value) {
@@ -526,65 +459,244 @@
         .replace(/'/g, '&#039;');
     }
 
-    function renderResult(result) {
-      const wrongCount = result.details.filter(d => !d.isCorrect).length;
-    
+    function showOnly(screenId) {
+      ['startScreen', 'testScreen', 'pageReviewScreen', 'resultScreen'].forEach(id => {
+        document.getElementById(id).classList.toggle('hidden', id !== screenId);
+      });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function startTest() {
+      const name = document.getElementById('studentName').value.trim();
+      if (!name) {
+        alert('Введите имя студента.');
+        return;
+      }
+      currentPage = 0;
+      renderCurrentPage();
+      showOnly('testScreen');
+    }
+
+    function getPageQuestions(pageIndex) {
+      const start = pageIndex * PAGE_SIZE;
+      return QUESTIONS.slice(start, start + PAGE_SIZE);
+    }
+
+    function renderCurrentPage() {
+      const pageQuestions = getPageQuestions(currentPage);
+      const firstNumber = currentPage * PAGE_SIZE + 1;
+      const lastNumber = firstNumber + pageQuestions.length - 1;
+      const pageNumber = currentPage + 1;
+
+      document.getElementById('pageCounter').textContent = `Страница ${pageNumber} / ${TOTAL_PAGES}`;
+      document.getElementById('pageTitle').textContent = `Страница ${pageNumber}`;
+      document.getElementById('pageSubtitle').textContent = `Вопросы ${firstNumber}-${lastNumber}. После проверки можно перейти дальше.`;
+
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      pageQuestions.forEach(question => {
+        const block = document.createElement('div');
+        block.className = 'question';
+        const section = question.section ? `<div class="section">${escapeHtml(question.section)}</div>` : '';
+        const optionsHtml = question.options.map((option, index) => {
+          const checked = answers[question.id] === index ? 'checked' : '';
+          return `
+            <label class="option">
+              <input type="radio" name="q${question.id}" value="${index}" ${checked} onchange="saveAnswer(${question.id}, ${index})" />
+              <span><b>${letter(index)}.</b> ${escapeHtml(option)}</span>
+            </label>
+          `;
+        }).join('');
+
+        block.innerHTML = `
+          ${section}
+          <div class="question-title">${question.id}. ${escapeHtml(question.text)}</div>
+          ${optionsHtml}
+        `;
+        container.appendChild(block);
+      });
+
+      updateProgress();
+    }
+
+    function saveAnswer(questionId, selectedIndex) {
+      answers[questionId] = selectedIndex;
+      updateProgress();
+    }
+
+    function updateProgress() {
+      const pageQuestions = getPageQuestions(currentPage);
+      const answeredOnPage = pageQuestions.filter(question => answers[question.id] !== undefined).length;
+      const answeredTotal = QUESTIONS.filter(question => answers[question.id] !== undefined).length;
+      const percent = Math.round((answeredTotal / QUESTIONS.length) * 100);
+      document.getElementById('answeredCounter').textContent = `Отвечено на странице: ${answeredOnPage} / ${pageQuestions.length}`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+    }
+
+    function buildDetails(pageQuestions) {
+      return pageQuestions.map(question => {
+        const selected = answers[question.id];
+        const isCorrect = selected === question.correct;
+        return {
+          id: question.id,
+          question: question.text,
+          selectedIndex: selected ?? null,
+          selectedText: selected === undefined ? 'Нет ответа' : question.options[selected],
+          correctIndex: question.correct,
+          correctText: question.options[question.correct],
+          options: question.options,
+          isCorrect,
+          explanation: question.explanation
+        };
+      });
+    }
+
+    function checkCurrentPage() {
+      const pageQuestions = getPageQuestions(currentPage);
+      const unanswered = pageQuestions.filter(question => answers[question.id] === undefined).length;
+      if (unanswered > 0) {
+        const ok = confirm(`Без ответа осталось вопросов на странице: ${unanswered}. Проверить страницу?`);
+        if (!ok) return;
+      }
+
+      const details = buildDetails(pageQuestions);
+      const score = details.filter(detail => detail.isCorrect).length;
+      const result = {
+        pageIndex: currentPage,
+        pageNumber: currentPage + 1,
+        score,
+        maxScore: pageQuestions.length,
+        percent: Math.round((score / pageQuestions.length) * 100),
+        details
+      };
+      checkedPages.set(currentPage, result);
+      renderPageReview(result);
+      showOnly('pageReviewScreen');
+    }
+
+    function renderPageReview(result) {
+      const wrongCount = result.details.filter(detail => !detail.isCorrect).length;
+      const totalChecked = Array.from(checkedPages.values()).reduce((sum, page) => sum + page.score, 0);
+      const maxChecked = Array.from(checkedPages.values()).reduce((sum, page) => sum + page.maxScore, 0);
+
+      document.getElementById('pageReviewTitle').textContent = `Результат страницы ${result.pageNumber}`;
+      document.getElementById('pageScoreStat').textContent = `${result.score} / ${result.maxScore}`;
+      document.getElementById('pagePercentStat').textContent = `${result.percent}%`;
+      document.getElementById('pageWrongStat').textContent = wrongCount;
+      document.getElementById('totalProgressStat').textContent = `${totalChecked} / ${maxChecked}`;
+      document.getElementById('nextPageButton').textContent = result.pageIndex === TOTAL_PAGES - 1
+        ? 'Показать итоговый результат'
+        : 'Следующая страница';
+
+      renderReviewItems(document.getElementById('pageReviewContainer'), result.details);
+    }
+
+    function renderReviewItems(container, details) {
+      container.innerHTML = '';
+
+      details.forEach(detail => {
+        const item = document.createElement('div');
+        item.className = `review-item ${detail.isCorrect ? 'correct' : 'wrong'}`;
+        const tag = detail.isCorrect
+          ? '<span class="tag correct">Правильно</span>'
+          : '<span class="tag wrong">Ошибка</span>';
+
+        const optionsHtml = detail.options.map((option, index) => {
+          const classes = ['review-option'];
+          const notes = [];
+
+          if (index === detail.correctIndex) {
+            classes.push(detail.isCorrect ? 'selected-correct' : 'right-answer');
+            notes.push('правильный ответ');
+          }
+
+          if (index === detail.selectedIndex && !detail.isCorrect) {
+            classes.push('wrong-answer');
+            notes.push('ваш ответ');
+          } else if (index === detail.selectedIndex && detail.isCorrect) {
+            notes.push('ваш ответ');
+          }
+
+          return `
+            <div class="${classes.join(' ')}">
+              <span><b>${letter(index)}.</b> ${escapeHtml(option)}</span>
+              ${notes.length ? `<span class="option-note">${notes.join(' · ')}</span>` : ''}
+            </div>
+          `;
+        }).join('');
+
+        const explanation = detail.isCorrect ? '' : `
+          <div class="explanation">
+            <b>Объяснение:</b> ${escapeHtml(detail.explanation)}
+          </div>
+        `;
+
+        item.innerHTML = `
+          ${tag}
+          <div><b>${detail.id}. ${escapeHtml(detail.question)}</b></div>
+          <div class="answer-line">Ответ студента: <b>${detail.selectedIndex === null ? 'нет ответа' : letter(detail.selectedIndex) + '. ' + escapeHtml(detail.selectedText)}</b></div>
+          <div class="answer-line">Правильный ответ: <b>${letter(detail.correctIndex)}. ${escapeHtml(detail.correctText)}</b></div>
+          <div class="review-options">${optionsHtml}</div>
+          ${explanation}
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function showCurrentPage() {
+      renderCurrentPage();
+      showOnly('testScreen');
+    }
+
+    function goNextPage() {
+      if (currentPage < TOTAL_PAGES - 1) {
+        currentPage += 1;
+        renderCurrentPage();
+        showOnly('testScreen');
+        return;
+      }
+      finishTest();
+    }
+
+    function calculateGrade(percent) {
+      if (percent >= 85) return '5';
+      if (percent >= 70) return '4';
+      if (percent >= 50) return '3';
+      return '2';
+    }
+
+    function finishTest() {
+      const allDetails = QUESTIONS.flatMap((_, index) => {
+        if (index % PAGE_SIZE !== 0) return [];
+        return buildDetails(getPageQuestions(index / PAGE_SIZE));
+      });
+      const score = allDetails.filter(detail => detail.isCorrect).length;
+      const percent = Math.round((score / QUESTIONS.length) * 100);
+      const grade = calculateGrade(percent);
+
+      lastResult = {
+        studentName: document.getElementById('studentName').value.trim(),
+        groupName: document.getElementById('groupName').value.trim(),
+        date: new Date().toLocaleString('ru-RU'),
+        score,
+        maxScore: QUESTIONS.length,
+        percent,
+        grade,
+        details: allDetails
+      };
+
+      renderFinalResult(lastResult);
+      showOnly('resultScreen');
+    }
+
+    function renderFinalResult(result) {
+      const wrongCount = result.details.filter(detail => !detail.isCorrect).length;
       document.getElementById('scoreStat').textContent = `${result.score} / ${result.maxScore}`;
       document.getElementById('percentStat').textContent = `${result.percent}%`;
       document.getElementById('gradeStat').textContent = result.grade;
       document.getElementById('wrongStat').textContent = wrongCount;
-    
-      const review = document.getElementById('reviewContainer');
-      review.innerHTML = '';
-    
-      result.details.forEach(d => {
-        const item = document.createElement('div');
-        item.className = `review-item ${d.isCorrect ? 'correct' : 'wrong'}`;
-    
-        const tag = d.isCorrect
-          ? '<span class="tag correct">Правильно</span>'
-          : '<span class="tag wrong">Ошибка</span>';
-    
-        const optionsHtml = d.options.map((option, index) => {
-          const classes = ['review-option'];
-          const notes = [];
-    
-          if (index === d.correctIndex) {
-            classes.push(d.isCorrect ? 'selected-correct' : 'right-answer');
-            notes.push('правильный ответ');
-          }
-    
-          if (index === d.selectedIndex && !d.isCorrect) {
-            classes.push('wrong-answer');
-            notes.push('ваш ответ');
-          } else if (index === d.selectedIndex && d.isCorrect) {
-            notes.push('ваш ответ');
-          }
-    
-          return `
-            <div class="${classes.join(' ')}">
-              <span><b>${letter(index)}.</b> ${escapeHtml(option)}</span>
-              ${notes.length ? `<span class="option-note">${notes.join(' ? ')}</span>` : ''}
-            </div>
-          `;
-        }).join('');
-    
-        const explanation = d.isCorrect ? '' : `
-          <div class="explanation">
-            <b>Объяснение:</b> ${escapeHtml(d.explanation)}
-          </div>
-        `;
-    
-        item.innerHTML = `
-          ${tag}
-          <div><b>${d.id}. ${escapeHtml(d.question)}</b></div>
-          <div class="answer-line">Ответ студента: <b>${d.selectedIndex === null ? 'нет ответа' : letter(d.selectedIndex) + '. ' + escapeHtml(d.selectedText)}</b></div>
-          <div class="answer-line">Правильный ответ: <b>${letter(d.correctIndex)}. ${escapeHtml(d.correctText)}</b></div>
-          <div class="review-options">${optionsHtml}</div>
-          ${explanation}
-        `;
-        review.appendChild(item);
-      });
+      renderReviewItems(document.getElementById('reviewContainer'), result.details);
     }
 
     function makeReportText() {
@@ -598,15 +710,15 @@
       lines.push('');
       lines.push('Ошибки:');
 
-      const wrong = lastResult.details.filter(d => !d.isCorrect);
+      const wrong = lastResult.details.filter(detail => !detail.isCorrect);
       if (wrong.length === 0) {
         lines.push('Ошибок нет.');
       } else {
-        wrong.forEach(d => {
-          lines.push(`${d.id}. ${d.question}`);
-          lines.push(`Ответ студента: ${d.selectedIndex === null ? 'нет ответа' : letter(d.selectedIndex) + '. ' + d.selectedText}`);
-          lines.push(`Правильно: ${letter(d.correctIndex)}. ${d.correctText}`);
-          lines.push(`Объяснение: ${d.explanation}`);
+        wrong.forEach(detail => {
+          lines.push(`${detail.id}. ${detail.question}`);
+          lines.push(`Ответ студента: ${detail.selectedIndex === null ? 'нет ответа' : letter(detail.selectedIndex) + '. ' + detail.selectedText}`);
+          lines.push(`Правильно: ${letter(detail.correctIndex)}. ${detail.correctText}`);
+          lines.push(`Объяснение: ${detail.explanation}`);
           lines.push('');
         });
       }
@@ -619,7 +731,7 @@
       try {
         await navigator.clipboard.writeText(text);
         alert('Отчёт скопирован.');
-      } catch (e) {
+      } catch (error) {
         const area = document.createElement('textarea');
         area.value = text;
         document.body.appendChild(area);
@@ -631,18 +743,18 @@
     }
 
     function csvEscape(value) {
-      const s = String(value ?? '');
-      return '"' + s.replace(/"/g, '""') + '"';
+      const text = String(value ?? '');
+      return `"${text.replace(/"/g, '""')}"`;
     }
 
     function downloadCsv() {
       if (!lastResult) return;
 
       const rows = [
-        ['Дата','Студент','Группа','Баллы','Максимум','Процент','Оценка','Номер','Вопрос','Ответ студента','Правильный ответ','Верно','Объяснение']
+        ['Дата', 'Студент', 'Группа', 'Баллы', 'Максимум', 'Процент', 'Оценка', 'Номер', 'Вопрос', 'Ответ студента', 'Правильный ответ', 'Верно', 'Объяснение']
       ];
 
-      lastResult.details.forEach(d => {
+      lastResult.details.forEach(detail => {
         rows.push([
           lastResult.date,
           lastResult.studentName,
@@ -651,24 +763,24 @@
           lastResult.maxScore,
           lastResult.percent,
           lastResult.grade,
-          d.id,
-          d.question,
-          d.selectedIndex === null ? 'Нет ответа' : letter(d.selectedIndex) + '. ' + d.selectedText,
-          letter(d.correctIndex) + '. ' + d.correctText,
-          d.isCorrect ? 'да' : 'нет',
-          d.isCorrect ? '' : d.explanation
+          detail.id,
+          detail.question,
+          detail.selectedIndex === null ? 'Нет ответа' : `${letter(detail.selectedIndex)}. ${detail.selectedText}`,
+          `${letter(detail.correctIndex)}. ${detail.correctText}`,
+          detail.isCorrect ? 'да' : 'нет',
+          detail.isCorrect ? '' : detail.explanation
         ]);
       });
 
       const csv = rows.map(row => row.map(csvEscape).join(',')).join('\n');
       const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `russian-test-result-${Date.now()}.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `russian-test-result-${Date.now()}.csv`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
       URL.revokeObjectURL(url);
     }
   </script>
