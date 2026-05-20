@@ -542,8 +542,8 @@
         item.className = `review-item ${d.isCorrect ? 'correct' : 'wrong'}`;
     
         const tag = d.isCorrect
-          ? '<span class="tag correct">?????????</span>'
-          : '<span class="tag wrong">??????</span>';
+          ? '<span class="tag correct">Правильно</span>'
+          : '<span class="tag wrong">Ошибка</span>';
     
         const optionsHtml = d.options.map((option, index) => {
           const classes = ['review-option'];
@@ -551,14 +551,14 @@
     
           if (index === d.correctIndex) {
             classes.push(d.isCorrect ? 'selected-correct' : 'right-answer');
-            notes.push('?????????? ?????');
+            notes.push('правильный ответ');
           }
     
           if (index === d.selectedIndex && !d.isCorrect) {
             classes.push('wrong-answer');
-            notes.push('??? ?????');
+            notes.push('ваш ответ');
           } else if (index === d.selectedIndex && d.isCorrect) {
-            notes.push('??? ?????');
+            notes.push('ваш ответ');
           }
     
           return `
@@ -571,15 +571,15 @@
     
         const explanation = d.isCorrect ? '' : `
           <div class="explanation">
-            <b>??????????:</b> ${escapeHtml(d.explanation)}
+            <b>Объяснение:</b> ${escapeHtml(d.explanation)}
           </div>
         `;
     
         item.innerHTML = `
           ${tag}
           <div><b>${d.id}. ${escapeHtml(d.question)}</b></div>
-          <div class="answer-line">????? ????????: <b>${d.selectedIndex === null ? '??? ??????' : letter(d.selectedIndex) + '. ' + escapeHtml(d.selectedText)}</b></div>
-          <div class="answer-line">?????????? ?????: <b>${letter(d.correctIndex)}. ${escapeHtml(d.correctText)}</b></div>
+          <div class="answer-line">Ответ студента: <b>${d.selectedIndex === null ? 'нет ответа' : letter(d.selectedIndex) + '. ' + escapeHtml(d.selectedText)}</b></div>
+          <div class="answer-line">Правильный ответ: <b>${letter(d.correctIndex)}. ${escapeHtml(d.correctText)}</b></div>
           <div class="review-options">${optionsHtml}</div>
           ${explanation}
         `;
