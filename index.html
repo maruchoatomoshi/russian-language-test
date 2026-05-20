@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Электронный тест по русскому языку</title>
+  <style>
+    :root {
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --border: #e5e7eb;
+      --accent: #111827;
+      --green: #047857;
+      --green-bg: #ecfdf5;
+      --red: #b91c1c;
+      --red-bg: #fef2f2;
+      --amber-bg: #fffbeb;
+      --amber: #92400e;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: radial-gradient(circle at top, #ffffff 0, var(--bg) 42%);
+      color: var(--text);
+      line-height: 1.5;
+    }
+
+    .wrap {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 14px 40px rgba(17,24,39,0.08);
+      margin-bottom: 18px;
+    }
+
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+    }
+
+    h2 {
+      margin: 0 0 12px;
+      font-size: 19px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 720px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #d1d5db;
+      border-radius: 12px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    input[type="text"]:focus {
+      border-color: #111827;
+      box-shadow: 0 0 0 3px rgba(17,24,39,0.08);
+    }
+
+    button {
+      border: 0;
+      border-radius: 14px;
+      padding: 13px 18px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+
+    .primary {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .button-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+
+    .button-row button {
+      flex: 1 1 220px;
+    }
+
+    .progress {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(243,244,246,0.92);
+      backdrop-filter: blur(10px);
+      padding: 10px 0;
+      margin-bottom: 10px;
+    }
+
+    .progress-inner {
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #111827;
+      transition: width 0.2s ease;
+    }
+
+    .question {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .question-title {
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .section {
+      display: inline-block;
+      margin-bottom: 8px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    label.option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin: 8px 0;
+      background: #fafafa;
+      cursor: pointer;
+    }
+
+    label.option:hover {
+      background: #f3f4f6;
+    }
+
+    .option input {
+      margin-top: 3px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    @media (max-width: 720px) {
+      .stats {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .stat {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      background: #fafafa;
+    }
+
+    .stat b {
+      display: block;
+      font-size: 24px;
+      margin-bottom: 2px;
+    }
+
+    .review-item {
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .review-item.correct {
+      background: var(--green-bg);
+      border-color: #a7f3d0;
+    }
+
+    .review-item.wrong {
+      background: var(--red-bg);
+      border-color: #fecaca;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .tag.correct {
+      color: var(--green);
+      background: #d1fae5;
+    }
+
+    .tag.wrong {
+      color: var(--red);
+      background: #fee2e2;
+    }
+
+    .answer-line {
+      margin: 5px 0;
+    }
+
+    .review-options {
+      display: grid;
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .review-option {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: rgba(255,255,255,0.78);
+    }
+
+    .review-option.right-answer {
+      border-color: #86efac;
+      background: #dcfce7;
+    }
+
+    .review-option.wrong-answer {
+      border-color: #fca5a5;
+      background: #fee2e2;
+    }
+
+    .review-option.selected-correct {
+      border-color: #86efac;
+      background: #dcfce7;
+    }
+
+    .option-note {
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+
+    .review-option.right-answer .option-note,
+    .review-option.selected-correct .option-note {
+      color: var(--green);
+    }
+
+    .review-option.wrong-answer .option-note {
+      color: var(--red);
+    }
+
+    .explanation {
+      margin-top: 10px;
+      padding: 12px;
+      border-left: 4px solid var(--red);
+      background: rgba(255,255,255,0.72);
+      border-radius: 10px;
+    }
+
+    .notice {
+      background: var(--amber-bg);
+      color: var(--amber);
+      border: 1px solid #fde68a;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+    }
+
+    .small {
+      font-size: 13px;
+    }
+
+    .top-actions {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" id="startScreen">
+      <div class="top-actions">
+        <div>
+          <h1>Электронный тест по русскому языку</h1>
+          <p class="muted">100 вопросов. После завершения появятся баллы и объяснения по неправильным ответам.</p>
+        </div>
+        <div class="muted">GitHub Pages · offline-ready</div>
+      </div>
+
+      <div class="notice small">
+        Вопросы очищены от дублей и спорных вариантов. Результаты не отправляются автоматически: их можно скопировать или скачать CSV.
+      </div>
+
+      <div class="row" style="margin-top: 16px;">
+        <input id="studentName" type="text" placeholder="Имя студента" />
+        <input id="groupName" type="text" placeholder="Группа / поток" />
+      </div>
+
+      <div class="button-row">
+        <button class="primary" onclick="startTest()">Начать тест</button>
+      </div>
+    </div>
+
+    <div id="testScreen" class="hidden">
+      <div class="progress">
+        <div class="top-actions small muted">
+          <span id="answeredCounter">Отвечено: 0 / 100</span>
+          <span>Тест по русскому языку</span>
+        </div>
+        <div class="progress-inner">
+          <div class="progress-bar" id="progressBar"></div>
+        </div>
+      </div>
+
+      <div id="questionsContainer"></div>
+
+      <div class="card">
+        <button class="primary" onclick="finishTest()">Завершить тест и показать объяснения</button>
+        <p class="muted small">После завершения ответы будут проверены, а неправильные варианты получат объяснение.</p>
+      </div>
+    </div>
+
+    <div class="hidden" id="resultScreen">
+      <div class="card">
+        <h1>Результат</h1>
+        <div class="stats">
+          <div class="stat"><b id="scoreStat">0</b><span>баллов</span></div>
+          <div class="stat"><b id="percentStat">0%</b><span>процент</span></div>
+          <div class="stat"><b id="gradeStat">—</b><span>оценка</span></div>
+          <div class="stat"><b id="wrongStat">0</b><span>ошибок</span></div>
+        </div>
+        <div class="button-row">
+          <button class="secondary" onclick="copyReport()">Скопировать отчёт</button>
+          <button class="secondary" onclick="downloadCsv()">Скачать CSV</button>
+          <button class="secondary" onclick="window.print()">Сохранить как PDF</button>
+          <button class="primary" onclick="location.reload()">Пройти заново</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Разбор ответов</h2>
+        <p class="muted">У неправильных ответов показано объяснение. Правильные ответы отмечены зелёным.</p>
+        <div id="reviewContainer"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="questions.js"></script>
+  <script>
+    let lastResult = null;
+
+    function letter(index) {
+      return ['А', 'Б', 'В', 'Г', 'Д'][index] || String(index + 1);
+    }
+
+    function startTest() {
+      const name = document.getElementById('studentName').value.trim();
+      if (!name) {
+        alert('Введите имя студента.');
+        return;
+      }
+      document.getElementById('startScreen').classList.add('hidden');
+      document.getElementById('testScreen').classList.remove('hidden');
+      renderQuestions();
+      updateProgress();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderQuestions() {
+      const container = document.getElementById('questionsContainer');
+      container.innerHTML = '';
+
+      QUESTIONS.forEach(q => {
+        const block = document.createElement('div');
+        block.className = 'question';
+
+        const section = q.section ? `<div class="section">${q.section}</div>` : '';
+        const optionsHtml = q.options.map((option, index) => `
+          <label class="option">
+            <input type="radio" name="q${q.id}" value="${index}" onchange="updateProgress()" />
+            <span><b>${letter(index)}.</b> ${option}</span>
+          </label>
+        `).join('');
+
+        block.innerHTML = `
+          ${section}
+          <div class="question-title">${q.id}. ${q.text}</div>
+          ${optionsHtml}
+        `;
+
+        container.appendChild(block);
+      });
+    }
+
+    function getSelectedIndex(q) {
+      const selected = document.querySelector(`input[name="q${q.id}"]:checked`);
+      return selected ? Number(selected.value) : null;
+    }
+
+    function updateProgress() {
+      const answered = QUESTIONS.filter(q => getSelectedIndex(q) !== null).length;
+      const percent = Math.round((answered / QUESTIONS.length) * 100);
+      document.getElementById('answeredCounter').textContent = `Отвечено: ${answered} / ${QUESTIONS.length}`;
+      document.getElementById('progressBar').style.width = `${percent}%`;
+    }
+
+    function calculateGrade(percent) {
+      if (percent >= 85) return '5';
+      if (percent >= 70) return '4';
+      if (percent >= 50) return '3';
+      return '2';
+    }
+
+    function finishTest() {
+      const unanswered = QUESTIONS.filter(q => getSelectedIndex(q) === null).length;
+      if (unanswered > 0) {
+        const ok = confirm(`Без ответа осталось вопросов: ${unanswered}. Завершить тест?`);
+        if (!ok) return;
+      }
+
+      let score = 0;
+      const details = QUESTIONS.map(q => {
+        const selected = getSelectedIndex(q);
+        const isCorrect = selected === q.correct;
+        if (isCorrect) score += 1;
+
+        return {
+          id: q.id,
+          question: q.text,
+          selectedIndex: selected,
+          selectedText: selected === null ? 'Нет ответа' : q.options[selected],
+          correctIndex: q.correct,
+          correctText: q.options[q.correct],
+          options: q.options,
+          isCorrect,
+          explanation: q.explanation
+        };
+      });
+
+      const percent = Math.round((score / QUESTIONS.length) * 100);
+      const grade = calculateGrade(percent);
+
+      lastResult = {
+        studentName: document.getElementById('studentName').value.trim(),
+        groupName: document.getElementById('groupName').value.trim(),
+        date: new Date().toLocaleString('ru-RU'),
+        score,
+        maxScore: QUESTIONS.length,
+        percent,
+        grade,
+        details
+      };
+
+      renderResult(lastResult);
+      document.getElementById('testScreen').classList.add('hidden');
+      document.getElementById('resultScreen').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function escapeHtml(value) {
+      return String(value ?? '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderResult(result) {
+      const wrongCount = result.details.filter(d => !d.isCorrect).length;
+    
+      document.getElementById('scoreStat').textContent = `${result.score} / ${result.maxScore}`;
+      document.getElementById('percentStat').textContent = `${result.percent}%`;
+      document.getElementById('gradeStat').textContent = result.grade;
+      document.getElementById('wrongStat').textContent = wrongCount;
+    
+      const review = document.getElementById('reviewContainer');
+      review.innerHTML = '';
+    
+      result.details.forEach(d => {
+        const item = document.createElement('div');
+        item.className = `review-item ${d.isCorrect ? 'correct' : 'wrong'}`;
+    
+        const tag = d.isCorrect
+          ? '<span class="tag correct">?????????</span>'
+          : '<span class="tag wrong">??????</span>';
+    
+        const optionsHtml = d.options.map((option, index) => {
+          const classes = ['review-option'];
+          const notes = [];
+    
+          if (index === d.correctIndex) {
+            classes.push(d.isCorrect ? 'selected-correct' : 'right-answer');
+            notes.push('?????????? ?????');
+          }
+    
+          if (index === d.selectedIndex && !d.isCorrect) {
+            classes.push('wrong-answer');
+            notes.push('??? ?????');
+          } else if (index === d.selectedIndex && d.isCorrect) {
+            notes.push('??? ?????');
+          }
+    
+          return `
+            <div class="${classes.join(' ')}">
+              <span><b>${letter(index)}.</b> ${escapeHtml(option)}</span>
+              ${notes.length ? `<span class="option-note">${notes.join(' ? ')}</span>` : ''}
+            </div>
+          `;
+        }).join('');
+    
+        const explanation = d.isCorrect ? '' : `
+          <div class="explanation">
+            <b>??????????:</b> ${escapeHtml(d.explanation)}
+          </div>
+        `;
+    
+        item.innerHTML = `
+          ${tag}
+          <div><b>${d.id}. ${escapeHtml(d.question)}</b></div>
+          <div class="answer-line">????? ????????: <b>${d.selectedIndex === null ? '??? ??????' : letter(d.selectedIndex) + '. ' + escapeHtml(d.selectedText)}</b></div>
+          <div class="answer-line">?????????? ?????: <b>${letter(d.correctIndex)}. ${escapeHtml(d.correctText)}</b></div>
+          <div class="review-options">${optionsHtml}</div>
+          ${explanation}
+        `;
+        review.appendChild(item);
+      });
+    }
+
+    function makeReportText() {
+      if (!lastResult) return '';
+      const lines = [];
+      lines.push('Электронный тест по русскому языку');
+      lines.push(`Дата: ${lastResult.date}`);
+      lines.push(`Студент: ${lastResult.studentName}`);
+      lines.push(`Группа: ${lastResult.groupName || '-'}`);
+      lines.push(`Результат: ${lastResult.score} / ${lastResult.maxScore} (${lastResult.percent}%), оценка ${lastResult.grade}`);
+      lines.push('');
+      lines.push('Ошибки:');
+
+      const wrong = lastResult.details.filter(d => !d.isCorrect);
+      if (wrong.length === 0) {
+        lines.push('Ошибок нет.');
+      } else {
+        wrong.forEach(d => {
+          lines.push(`${d.id}. ${d.question}`);
+          lines.push(`Ответ студента: ${d.selectedIndex === null ? 'нет ответа' : letter(d.selectedIndex) + '. ' + d.selectedText}`);
+          lines.push(`Правильно: ${letter(d.correctIndex)}. ${d.correctText}`);
+          lines.push(`Объяснение: ${d.explanation}`);
+          lines.push('');
+        });
+      }
+
+      return lines.join('\n');
+    }
+
+    async function copyReport() {
+      const text = makeReportText();
+      try {
+        await navigator.clipboard.writeText(text);
+        alert('Отчёт скопирован.');
+      } catch (e) {
+        const area = document.createElement('textarea');
+        area.value = text;
+        document.body.appendChild(area);
+        area.select();
+        document.execCommand('copy');
+        document.body.removeChild(area);
+        alert('Отчёт скопирован.');
+      }
+    }
+
+    function csvEscape(value) {
+      const s = String(value ?? '');
+      return '"' + s.replace(/"/g, '""') + '"';
+    }
+
+    function downloadCsv() {
+      if (!lastResult) return;
+
+      const rows = [
+        ['Дата','Студент','Группа','Баллы','Максимум','Процент','Оценка','Номер','Вопрос','Ответ студента','Правильный ответ','Верно','Объяснение']
+      ];
+
+      lastResult.details.forEach(d => {
+        rows.push([
+          lastResult.date,
+          lastResult.studentName,
+          lastResult.groupName || '',
+          lastResult.score,
+          lastResult.maxScore,
+          lastResult.percent,
+          lastResult.grade,
+          d.id,
+          d.question,
+          d.selectedIndex === null ? 'Нет ответа' : letter(d.selectedIndex) + '. ' + d.selectedText,
+          letter(d.correctIndex) + '. ' + d.correctText,
+          d.isCorrect ? 'да' : 'нет',
+          d.isCorrect ? '' : d.explanation
+        ]);
+      });
+
+      const csv = rows.map(row => row.map(csvEscape).join(',')).join('\n');
+      const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `russian-test-result-${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
