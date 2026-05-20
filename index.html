@@ -477,7 +477,7 @@
         <div class="button-row">
           <button class="secondary" onclick="copyReport()">Скопировать отчёт</button>
           <button class="secondary" onclick="downloadCsv()">Скачать CSV</button>
-          <button class="secondary" onclick="window.print()">Сохранить как PDF</button>
+          <button class="secondary" onclick="downloadPdf()">Скачать PDF</button>
           <button class="primary" onclick="location.reload()">Пройти заново</button>
         </div>
       </div>
@@ -490,6 +490,7 @@
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="questions.js"></script>
   <script>
     const PAGE_SIZE = 10;
@@ -916,6 +917,81 @@
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(url);
+    }
+
+    function buildPdfReportElement() {
+      const wrapper = document.createElement('div');
+      wrapper.style.width = '760px';
+      wrapper.style.padding = '28px';
+      wrapper.style.fontFamily = 'Arial, Helvetica, sans-serif';
+      wrapper.style.color = '#111827';
+      wrapper.style.background = '#ffffff';
+
+      const isPassed = lastResult.percent >= 66;
+      const wrong = lastResult.details.filter(detail => !detail.isCorrect);
+      const topics = getReviewTopics(lastResult.details);
+      const topicsHtml = !isPassed && topics.length
+        ? `
+          <h2 style="font-size:18px;margin:22px 0 8px;">Темы для повторения</h2>
+          <ul style="margin-top:8px;padding-left:20px;">
+            ${topics.map(item => `<li>${escapeHtml(item.topic)} (${item.count} ${formatMistakeCount(item.count)})</li>`).join('')}
+          </ul>
+        `
+        : '';
+
+      const mistakesHtml = wrong.length
+        ? wrong.map(detail => `
+          <div style="border-top:1px solid #e5e7eb;padding-top:12px;margin-top:12px;">
+            <div style="font-weight:700;">${detail.id}. ${escapeHtml(detail.question)}</div>
+            <div>Ответ студента: <b>${detail.selectedIndex === null ? 'нет ответа' : `${letter(detail.selectedIndex)}. ${escapeHtml(detail.selectedText)}`}</b></div>
+            <div>Правильный ответ: <b>${letter(detail.correctIndex)}. ${escapeHtml(detail.correctText)}</b></div>
+            <div style="margin-top:6px;">Объяснение: ${escapeHtml(detail.explanation)}</div>
+          </div>
+        `).join('')
+        : '<p>Ошибок нет.</p>';
+
+      wrapper.innerHTML = `
+        <h1 style="font-size:24px;margin:0 0 6px;">Электронный тест по русскому языку</h1>
+        <p style="margin:0 0 18px;color:#6b7280;">${escapeHtml(lastResult.date)}</p>
+        <p><b>Студент:</b> ${escapeHtml(lastResult.studentName)}</p>
+        <p><b>Группа:</b> ${escapeHtml(lastResult.groupName || '-')}</p>
+        <div style="border:1px solid ${isPassed ? '#86efac' : '#fca5a5'};background:${isPassed ? '#ecfdf5' : '#fef2f2'};border-radius:12px;padding:14px;margin:18px 0;">
+          <h2 style="font-size:20px;margin:0 0 6px;">${isPassed ? '✓ Тест сдан. Ты умничка!' : '! Тест не сдан'}</h2>
+          <div>Результат: <b>${lastResult.score} / ${lastResult.maxScore}</b> (${lastResult.percent}%), оценка ${lastResult.grade}</div>
+        </div>
+        ${topicsHtml}
+        <h2 style="font-size:18px;margin:22px 0 8px;">Ошибки и объяснения</h2>
+        ${mistakesHtml}
+      `;
+
+      return wrapper;
+    }
+
+    async function downloadPdf() {
+      if (!lastResult) return;
+
+      if (typeof html2pdf === 'undefined') {
+        alert('Не удалось загрузить генератор PDF. Проверьте интернет-соединение и попробуйте ещё раз.');
+        return;
+      }
+
+      const element = buildPdfReportElement();
+      const safeName = (lastResult.studentName || 'student')
+        .replace(/[\\/:*?"<>|]+/g, '')
+        .replace(/\s+/g, '-')
+        .toLowerCase();
+
+      await html2pdf()
+        .set({
+          margin: 10,
+          filename: `russian-test-${safeName}-${Date.now()}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true },
+          jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+          pagebreak: { mode: ['avoid-all', 'css', 'legacy'] }
+        })
+        .from(element)
+        .save();
     }
   </script>
 </body>
