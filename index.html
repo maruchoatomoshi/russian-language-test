@@ -6,20 +6,20 @@
   <title>Электронный тест по русскому языку</title>
   <style>
     :root {
-      --bg: #f3f4f6;
+      --bg: #eaf7ff;
       --card: #ffffff;
-      --text: #111827;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --accent: #111827;
+      --text: #123044;
+      --muted: #5f7a8d;
+      --border: #cfe7f5;
+      --accent: #1d75a3;
       --green: #047857;
       --green-bg: #ecfdf5;
       --red: #b91c1c;
       --red-bg: #fef2f2;
       --amber-bg: #fffbeb;
       --amber: #92400e;
-      --blue-bg: #eff6ff;
-      --blue: #1d4ed8;
+      --blue-bg: #e1f4ff;
+      --blue: #176c9b;
     }
 
     * {
@@ -29,7 +29,9 @@
     body {
       margin: 0;
       font-family: Arial, Helvetica, sans-serif;
-      background: radial-gradient(circle at top, #ffffff 0, var(--bg) 42%);
+      background:
+        radial-gradient(circle at top left, #ffffff 0, rgba(255,255,255,0.72) 28%, transparent 52%),
+        linear-gradient(180deg, #e7f7ff 0%, #f5fbff 48%, #eaf7ff 100%);
       color: var(--text);
       line-height: 1.5;
     }
@@ -51,6 +53,18 @@
       border-radius: 20px;
       padding: 24px;
       margin-bottom: 18px;
+    }
+
+    .start-card {
+      text-align: center;
+    }
+
+    .brand-logo {
+      display: block;
+      width: min(280px, 74vw);
+      max-height: 170px;
+      object-fit: contain;
+      margin: 0 auto 18px;
     }
 
     h1 {
@@ -114,9 +128,13 @@
       color: #fff;
     }
 
+    .primary:hover {
+      background: #155f86;
+    }
+
     .secondary {
-      background: #e5e7eb;
-      color: #111827;
+      background: #d8edf8;
+      color: #123044;
     }
 
     .button-row {
@@ -134,7 +152,7 @@
       position: sticky;
       top: 0;
       z-index: 10;
-      background: rgba(243, 244, 246, 0.94);
+      background: rgba(234, 247, 255, 0.94);
       backdrop-filter: blur(10px);
       padding: 10px 0;
       margin-bottom: 10px;
@@ -202,7 +220,7 @@
     }
 
     label.option:hover {
-      background: #f3f4f6;
+      background: #eef8ff;
     }
 
     .option input {
@@ -394,7 +412,8 @@
 </head>
 <body>
   <div class="wrap">
-    <div class="card" id="startScreen">
+    <div class="card start-card" id="startScreen">
+      <img class="brand-logo" src="1092bd614c28b94c44ec593202e66be2.png" alt="Логотип теста" />
       <div class="top-actions">
         <div>
           <h1>Электронный тест по русскому языку</h1>
